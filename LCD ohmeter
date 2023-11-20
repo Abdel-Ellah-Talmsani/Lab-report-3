@@ -1,1 +1,83 @@
 Objectif: The LCD ohmeter program works like an ohmeter, being capable of reading any resistor's resistence and display it on the LCD
+Main theme is Analog Input + Cstom characters using lcd.write and bytes. */
+// The library of the LCD.
+#include <LiquidCrystal.h>
+// We announce which LCD pin is connected to which arduino pin 
+const.int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+The liquidcrystal variable applies to allaruino pins with a variable 
+LiquidCrystak lcd(rs, en, d4, d5, d6, d7)
+// Using the binary code, a special character(half of an omega sign) is displayed
+byte omegaA[8] =
+{
+0b00011,
+0b00100,
+0b01000,
+0b01000,
+0b01000,
+0b00100,
+0b10010,
+0b11110
+};
+// second half of the omega sign
+byte omegaB[8] =
+{
+0b11000,
+0b00100,
+0b00010,
+0b00010,
+0b00010,
+0b00100,
+0b01001,
+0b01111
+};
+// the variable "PB" is given the value of 13(pin 13 on arduino), and it's the start button for our ohmeter
+int PB = 13;
+void setup()
+{
+// pin 13 will work as an input
+pinMode(PB, INPUT);
+//enables printing on the LCD screen
+lcd.begin(16,2);
+print the word ohmeter: on the LCD.
+lcd.print("ohmeter:");
+// this code is used to create our own custom character
+// indicating Omega A as 0.
+lcd.createchar(0, omegaA);
+// indicating Omega B as 1.
+lcd.createchar (1, omegaB);
+}
+voidloop()
+{
+// the "BPval" integer variable has the value of the digital output of Pin 13 of the arduino.
+int BPval = digitalRead(PB);
+// set the cursor on the second of lcd screen
+lcd.setCursor(0,1);
+// float variable named "bit" has the value of the analog Input pin zero on arduino
+float bit = analogRead(A0);
+//float variable named "Voltage' has the value of "bit" multiplied by 0.005.
+float voltage = bit*(5/1023);
+//float variable named "Vacross" and has a value of 5v - voltage value to fing the voltage across
+float Vacross = (5-Voltage);
+//float variable named Current has the value of of the voltage across divided by 1000
+float current = Vacross/1000;
+// float variable named "Resistence" has the value of the voltage divided by the current
+float resistence = Voltage/current;
+// print the word "R=" on the LCD.
+lcd.print("R=");
+// if value stored within the PBval variable is equal to zero 
+if(PBval ==0)
+{
+// print the word "OL" on LCD
+lcd.print("OL");
+}
+// If not
+else
+{
+// print the resistance value stored within the resistence variable on the LCD.
+lcd.print(resistence);
+// print custom characters 
+lcd.write(byte(0));
+lcd.write(byte(1));
+}
+}
+
