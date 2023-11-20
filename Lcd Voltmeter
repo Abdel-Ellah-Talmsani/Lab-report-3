@@ -1,0 +1,28 @@
+ the goal of the LCD voltmeter display is to use a potentiometer as a voltmeter and when we adjust the potentiometer we also change the voltage displayed on The LCD
+The main theme is Analog Input + ICD.print command.*/
+// The library of the LCD.
+#include <LiquidCrystal.h>
+// We announce which LCD pin is connected to which arduino pin 
+const.int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+The liquidcrystal variable applies to allaruino pins with a variable 
+LiquidCrystak lcd(rs, en, d4, d5, d6, d7)
+void setup()
+{
+It enables printing on the LCD screen.
+lcd.begin(16,2)
+print the word "Voltmeter" on the LCD.
+lcd.print("Voltmeter");
+}
+void loop()
+{
+//set the cursor on the second row on the LCD screen
+lcd.setcursor(0,1);
+// The float variable(bit) is given the value of the analog pin zero of the arduino. All the values read by the arduino will be stored inside the bit variable
+float Bit = analogRead(A0);
+// the second float variable named Voltage is given the bit value multiplied by 0.005 to turn the bit values to voltage values
+float Voltage = Bit * (5.0/1023);
+// print the word "Voltage =" on the LCD
+lcd.print("Voltage =");
+// Print the voltage value of the voltage variable
+lcd.print(Voltage);
+}
